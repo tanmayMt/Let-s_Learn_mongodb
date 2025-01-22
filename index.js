@@ -53,14 +53,25 @@ app.get("/",(req,res)=>{
     res.send("<h1>Welcome To Products Page</h1>");
 });
 
-app.post("/products",(req,res)=>{
-  
+app.post("/products",async(req,res)=>{
+  try{
+    //Get data from request body
     const title = req.body.title;
     const price = req.body.price;
     const description = req.body.description;
-    res.status(201).send({title,price,description});
-  
 
+    const newProduct = new Product({
+      title:title,
+      price:price,
+      description:description
+    })
+    const productData = await newProduct.save();
+
+    res.status(201).send(productData);
+  }
+  catch(error){
+    res.status(500).send({message:error.message});
+  }
 });
 
 app.listen(port, async () => {
