@@ -36,7 +36,7 @@ const productSchema = new mongoose.Schema({
     type: Number,
     reuired: true,
   },
-  date: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
