@@ -9,7 +9,6 @@ const mongoose = require("mongoose");
 const port = 3002;
 const app = express();
 
-
 const connectDB = async () => {
   try {
     await mongoose.connect("mongodb://localhost:27017/mongodb_learn");
@@ -19,6 +18,31 @@ const connectDB = async () => {
   }
 };
 
+// Mongoose schema & model
+// - define structure of document with validation
+// - we can define default values of a field
+// - A model works as a wrapper for schema. It provides an interface for accessign database to create, update, delete, read from database.
+
+const productSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    reuired: true,
+  },
+  description: {
+    type: String,
+    reuired: true,
+  },
+  price: {
+    type: Number,
+    reuired: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+const Product = mongoose.model("Products", productSchema);
 
 app.listen(port, async () => {
   console.log(`server is running at http://localhost:${port}`);
