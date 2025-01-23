@@ -9,12 +9,20 @@ const mongoose = require("mongoose");
 const port = 3002;
 const app = express();
 
+//mongodb connection
+const connectDB = async () => {
+  try {
+    await mongoose.connect("mongodb://localhost:27017/mongodb_learn");
+    console.log("mongodb is connected");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // Mongoose schema & model
 // - define structure of document with validation
 // - we can define default values of a field
 // - A model works as a wrapper for schema. It provides an interface for accessign database to create, update, delete, read from database.
-
 const productSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -33,18 +41,8 @@ const productSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-
 const Product = mongoose.model("Products", productSchema);
 
-
-const connectDB = async () => {
-  try {
-    await mongoose.connect("mongodb://localhost:27017/mongodb_learn");
-    console.log("mongodb is connected");
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -55,15 +53,10 @@ app.get("/",(req,res)=>{
 
 app.post("/products",async(req,res)=>{
   try{
-    //Get data from request body
-    const title = req.body.title;
-    const price = req.body.price;
-    const description = req.body.description;
-
     const newProduct = new Product({
-      title:title,
-      price:price,
-      description:description
+      title:req.body.title,
+      price:req.body.price,
+      description:req.body.description
     })
     const productData = await newProduct.save();
 
