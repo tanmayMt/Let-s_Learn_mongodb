@@ -56,16 +56,34 @@ app.get("/",(req,res)=>{
 
 app.post("/products", async (req, res) => {
   try {
-    // Creating a new Product document using the request body
-    const newProduct = new Product({
-      title: req.body.title,       // Product title from the request body
-      price: req.body.price,       // Product price from the request body
-      description: req.body.description, // Product description from the request body
-    });
+    // // Creating a new Product document using the request body
+    // const newProduct = new Product({
+    //   title: req.body.title,       // Product title from the request body
+    //   price: req.body.price,       // Product price from the request body
+    //   description: req.body.description, // Product description from the request body
+    // });
 
-    // Saving the newly created Product to the database
-    const productData = await newProduct.save(); // Add a new product to the database
+    // // Saving the newly created Product to the database
+    // const productData = await newProduct.save(); // Add a new product to the database
 
+    // // Sending the saved Product data as the response with a 201 Created status
+    // res.status(201).send(productData);
+
+    // Create multiple document
+
+    const productData = await Product.insertMany([
+      {
+        title: "iPhone 16",
+        description: "a nice product",
+        price: 1300,
+      },
+      {
+        title: "iPhone 17",
+        description: "a nice cute product",
+        price: 1990,
+      }
+    ])
+    // console.log(productData);
     // Sending the saved Product data as the response with a 201 Created status
     res.status(201).send(productData);
   } catch (error) {
