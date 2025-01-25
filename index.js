@@ -98,7 +98,7 @@ app.get("/products", async (req, res) => {
     const products = await Product.find();
     
     // Fetch a limited number of products (2) from the database
-    const productsl = await Product.find().limit(2);
+    const products1 = await Product.find().limit(2);
 
     // Send the retrieved products as a response with status code 201 (Created)
     res.status(201).send(products);
