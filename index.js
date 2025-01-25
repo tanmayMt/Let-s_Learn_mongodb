@@ -54,6 +54,7 @@ app.get("/",(req,res)=>{
     res.send("<h1>Welcome To Products Page</h1>");
 });
 
+// Route handler for GET request to "/products"  ->Creating a new Product document
 app.post("/products", async (req, res) => {
   try {
     // // Creating a new Product document using the request body
@@ -90,6 +91,23 @@ app.post("/products", async (req, res) => {
   }
 });
 
+// Route handler for GET request to "/products"
+app.get("/products", async (req, res) => {
+  try {
+    // Fetch all products from the database
+    const products = await Product.find();
+    
+    // Fetch a limited number of products (2) from the database
+    const productsl = await Product.find().limit(2);
+
+    // Send the retrieved products as a response with status code 201 (Created)
+    res.status(201).send(products);
+  } catch (error) {
+    // Catch any error that occurs while fetching products from the database
+    // Send a 500 Internal Server Error response along with the error message
+    res.status(500).send({ message: error.message });
+  }
+});
 
 // Start the server
 app.listen(port, async () => {
