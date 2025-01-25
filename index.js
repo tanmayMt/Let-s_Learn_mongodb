@@ -70,19 +70,17 @@ app.post("/products", async (req, res) => {
     // res.status(201).send(productData);
 
     // Create multiple document
-
-    const productData = await Product.insertMany([
-      {
-        title: "iPhone 16",
-        description: "a nice product",
-        price: 1300,
-      },
-      {
-        title: "iPhone 17",
-        description: "a nice cute product",
-        price: 1990,
-      }
-    ])
+    const newProduct1 = new Product({
+      title: "iPhone 16",
+      description: "a nice product",
+      price: 1300,
+    });
+    const newProduct2 = new Product({
+      title: "iPhone 17",
+      description: "a nice cute product",
+      price: 1990,
+    });
+    const productData = await Product.insertMany([newProduct1,newProduct2]);
     // console.log(productData);
     // Sending the saved Product data as the response with a 201 Created status
     res.status(201).send(productData);
