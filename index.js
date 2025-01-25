@@ -97,8 +97,8 @@ app.get("/products", async (req, res) => {
     // Fetch all products from the database
     const products = await Product.find();
     
-    // Fetch a limited number of products (2) from the database
-    const products1 = await Product.find().limit(2);
+    // // Fetch a limited number of products (2) from the database
+    // const products1 = await Product.find().limit(2);
 
     // Send the retrieved products as a response with status code 201 (Created)
     res.status(201).send(products);
@@ -108,6 +108,9 @@ app.get("/products", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
+
+
+
 
 // Start the server
 app.listen(port, async () => {
