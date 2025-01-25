@@ -93,6 +93,7 @@ app.post("/products", async (req, res) => {
 
 // Route handler for GET request to "/products"
 app.get("/products", async (req, res) => {
+  console.log(`/products`);
   try {
     // Fetch all products from the database
     const products = await Product.find();
@@ -109,8 +110,29 @@ app.get("/products", async (req, res) => {
   }
 });
 
+// Route handler for GET request to Fetch the product based on the "id" provided in the URL parameter
+//http://localhost:3002/products/67946cc81c0fc2fd32d9aa67
+app.get("/products/:id", async (req, res) => {     
+  console.log(`/products/${req.params.id}`)
+  try {
+    // Fetch the product based on the "id" provided in the URL parameter
+    // If "id" is provided in the request parameters, it will filter products based on that
+    const product = await Product.find({ _id: req.params.id });
+                                      //Ensure that the id field in your database is actually called id. If your database schema uses _id (which is common in MongoDB), update the quer
+    
+    // Send the retrieved product(s) as a response
+    res.status(200).send(product);
+  } catch (error) { // Catch any error that occurs while fetching products from the database
+    // Handle errors and send an internal server error response
+    res.status(500).send({ message: error.message });
+  }
+});
 
 
+//Route Not Found
+app.use((req,res)=>{
+    res.status(404).json({message:"Route Not Fount"});
+})
 
 // Start the server
 app.listen(port, async () => {
