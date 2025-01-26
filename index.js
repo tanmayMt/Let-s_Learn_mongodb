@@ -102,7 +102,21 @@ app.get("/products", async (req, res) => {
     // const products1 = await Product.find().limit(2);
 
     // Send the retrieved products as a response with status code 201 (Created)
-    res.status(201).send(products);
+    // Check if any products are found
+    if (products.length>0) {// Check if the `products` array is empty
+      // If products are found, send a success response with a 201 status
+      res.status(201).send({
+        success: true,                  // Indicates the request was successful
+        message: "return all products", // Descriptive message for the response
+        data: products,                 // Include the retrieved product data
+      });
+    } else {
+      // If no products are found, send a 404 Not Found response
+      res.status(404).send({
+        success: false,                 // Indicates the request failed
+        message: "Products Not Found!!" // Descriptive message for the failure
+      });
+    }
   } catch (error) {
     // Catch any error that occurs while fetching products from the database
     // Send a 500 Internal Server Error response along with the error message
@@ -111,27 +125,41 @@ app.get("/products", async (req, res) => {
 });
 
 // Route handler for GET request to Fetch the product based on the "id" provided in the URL parameter
-//http://localhost:3002/product/67946cc81c0fc2fd32d9aa67
+http://localhost:3002/product/6795b15bbed6dd86bdba1b91
 app.get("/product/:id", async (req, res) => {     
   console.log(`/product/${req.params.id}`)
   try {
     // Fetch the product based on the "id" provided in the URL parameter
     // If "id" is provided in the request parameters, it will filter products based on that
-    const product = await Product.find({ _id: req.params.id });
+    const product1 = await Product.find({ _id: req.params.id });
                                       //Ensure that the id field in your database is actually called id. If your database schema uses _id (which is common in MongoDB), update the quer
     // Find a single product that matches the given _id (returns one document).
-    // Use this when you expect only one result or need a single document.                                  
-    const product1 = await Product.findOne({ _id: req.params.id });
+    // Use this w33hen you expect only one result or need a single document.                                  
+    const product = await Product.findOne({ _id: req.params.id });
 
-    // Send the retrieved product(s) as a response
-    res.status(200).send(product);
+    // Send the retrieved product as a response
+    // Check if any products are found
+    if (product) {   // Ensure the `product` variable is not null or undefined. `product` is not a array
+      // If products are found, send a success response with a 201 status
+      res.status(200).send({
+        success: true,                  // Indicates the request was successful
+        message: "return single product", // Descriptive message for the response
+        data: product,                 // Include the retrieved product data
+      });
+    } else {
+      // If no products are found, send a 404 Not Found response
+      res.status(404).send({
+        success: false,                 // Indicates the request failed
+        message: "Product is not Found!!" // Descriptive message for the failure
+      });
+    }
   } catch (error) { // Catch any error that occurs while fetching products from the database
     // Handle errors and send an internal server error response
     res.status(500).send({ message: error.message });
   }
 });
 
-// Define an API endpoint to fetch spacific field "title" of a product by its ID//http://localhost:3002/product/title/67946cc81c0fc2fd32d9aa67
+// Define an API endpoint to fetch spacific field "title" of a product by its ID http://localhost:3002/product/title/6795b15bbed6dd86bdba1b91
 app.get("/product/title/:id", async (req, res) => {     
   console.log(`/product/${req.params.id}`)
   try {
@@ -141,9 +169,23 @@ app.get("/product/title/:id", async (req, res) => {
                                        .select({title:1,_id:0});
                                         // `{ title: 1 }` means include the `title` field in the result
                                                   // `{ _id: 0 }` means exclude the `_id` field from the result
-                                                  
+
     // Send the retrieved product(s) as a response
-    res.status(200).send(productTitle);
+    // Check if any products are found
+    if (productTitle) {   // Ensure the `product` variable is not null or undefined. `product` is not a array
+      // If products are found, send a success response with a 201 status
+      res.status(200).send({
+        success: true,                  // Indicates the request was successful
+        message: "return single product", // Descriptive message for the response
+        data: productTitle,                 // Include the retrieved product data
+      });
+    } else {
+      // If no products are found, send a 404 Not Found response
+      res.status(404).send({
+        success: false,                 // Indicates the request failed
+        message: "Product is not Found!!" // Descriptive message for the failure
+      });
+    }
   } catch (error) { // Catch any error that occurs while fetching products from the database
     // Handle errors and send an internal server error response
     res.status(500).send({ message: error.message });
