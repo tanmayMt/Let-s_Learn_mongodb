@@ -131,13 +131,12 @@ app.get("/product/:id", async (req, res) => {
   }
 });
 
-// Route handler for GET request to Fetch the product's specific field(title) based on the "id" provided in the URL parameter
-//http://localhost:3002/product/title/67946cc81c0fc2fd32d9aa67
+// Define an API endpoint to fetch spacific field "title" of a product by its ID//http://localhost:3002/product/title/67946cc81c0fc2fd32d9aa67
 app.get("/product/title/:id", async (req, res) => {     
   console.log(`/product/${req.params.id}`)
   try {
-    // Find a single product that matches the given _id (returns one document).
-    // Use this when you expect only one result or need a single document.                                  
+    // Find a single product by its `_id` field and retrieve only the `title` field
+    // Use `.select({ title: 1 })` to include only the `title` field in the response                                  
     const productTitle = await Product.findOne({ _id: req.params.id }).select({title:1});
 
     // Send the retrieved product(s) as a response
