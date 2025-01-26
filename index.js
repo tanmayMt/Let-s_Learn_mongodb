@@ -246,6 +246,46 @@ app.get("/getAllProducts", async (req, res) => {
   }
 });
 
+// Route handler for GET request to "/getAllProductsalogical"
+// Query Operators: Logical operators
+// $and, $or, $not, $nor    Example:   {$and : [{},{}]}
+app.get("/getAllProductsalogical", async (req, res) => {
+  console.log(`/getAllProductsalogical`);
+  try {
+    // Extracting the price from the query parameters
+    //http://localhost:3002/getAllProductsalogical?price=1300&rating=4
+    const price=req.query.price;
+    const rating= req.query.rating;
+
+    console.log(price);
+    console.log(rating);
+  // Fetch all products from the database where:
+  // 1. The price is exactly equal to the given value
+  // 2. The rating is greater than or equal to the given value
+    const products = await Product.find({$and:[
+      {price:{$eq:price}},{rating:{$gte:rating}}
+    ]
+    });
+
+    // Check if any products are found
+    if (products.length>0) {// Check if the `products` array is empty
+      res.status(201).send({
+        success: true,                  
+        message: "return all products(/getAllProducts)", 
+        data: products,
+      });
+    } else {
+      // If no products are found, send a 404 Not Found response
+      res.status(404).send({
+        success: false,                 
+        message: "Products Not Found!!" 
+      });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
 //Route Not Found
 app.use((req,res)=>{
     res.status(404).json({message:"Route Not Fount"});
