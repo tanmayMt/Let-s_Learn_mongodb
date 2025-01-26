@@ -308,7 +308,6 @@ const productsnot = await Product.find({ price: { $not: { $lt: 900 } } });
 app.get("/getProductsCount", async (req, res) => {
   // Log the endpoint being hit for debugging purposes
   console.log(`/getProductsCount`);
-
   try {
     // Fetch the total count of products from the database
     // `Product.find()` retrieves all products, and `.countDocuments()` counts the number of documents
@@ -321,7 +320,34 @@ app.get("/getProductsCount", async (req, res) => {
       data: {noOfProducts,notOfProductsWithPrice900},
     });
   } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
 
+
+// Route handler for GET request to "/getProductsSort" to retrieve sorted products
+// Endpoint: http://localhost:3002/getProductsSort
+app.get("/getProductsSort", async (req, res) => {
+
+  console.log(`/getProductsSort`);
+  try {
+    // Fetch all products from the database and sort them in ascending order based on the "price" field
+    // `{ price: 1 }` indicates sorting in ascending order
+    const sortedProducts = await Product.find().sort({price:1});   // 1 -> ascending
+    
+    // Fetch all products from the database and sort them in descending order based on the "price" field
+    // `{ price: -1 }` indicates sorting in descending order
+    const productsDes = await Product.find().sort({ price: -1 });  // -1 -> ascending
+
+   // Send the sorted products (ascending order) as a success response
+    res.status(201).send({
+      success: true,                  
+      message: "return no of products(/getProductsSort)",
+      data: sortedProducts,
+    });
+  } catch (error) {
     res.status(500).send({
       message: error.message,
     });
