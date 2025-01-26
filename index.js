@@ -203,6 +203,33 @@ app.get("/product/title/:id", async (req, res) => {
   }
 });
 
+// Route handler for GET request to "/getAllProducts"
+// Comparsion query operators
+app.get("/getAllProducts", async (req, res) => {
+  console.log(`/getAllProducts`);
+  try {
+    // Fetch all products from the database where the price is exactly 900
+    const products = await Product.find({price:{$eq:900}});
+
+    // Check if any products are found
+    if (products.length>0) {// Check if the `products` array is empty
+      res.status(201).send({
+        success: true,                  
+        message: "return all products(/getAllProducts)", 
+        data: products,
+      });
+    } else {
+      // If no products are found, send a 404 Not Found response
+      res.status(404).send({
+        success: false,                 
+        message: "Products Not Found!!" 
+      });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
 //Route Not Found
 app.use((req,res)=>{
     res.status(404).json({message:"Route Not Fount"});
