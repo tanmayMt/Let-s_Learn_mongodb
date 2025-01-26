@@ -341,6 +341,11 @@ app.get("/getProductsSort", async (req, res) => {
     // `{ price: -1 }` indicates sorting in descending order
     const productsDes = await Product.find().sort({ price: -1 });  // -1 -> ascending
 
+// sort and select
+    const sortedproductstitle = await Product.find().sort({ title: 1 })
+                                         .select({ title: 1, _id: 0 });
+    console.log(sortedproductstitle);
+
    // Send the sorted products (ascending order) as a success response
     res.status(201).send({
       success: true,                  
