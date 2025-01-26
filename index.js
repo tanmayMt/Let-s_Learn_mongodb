@@ -39,6 +39,10 @@ const productSchema = new mongoose.Schema({    // Define a schema
     type: Number,
     reuired: true,
   },
+  rating: {
+    type: Number,
+    reuired: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
