@@ -366,15 +366,18 @@ app.delete("/product/:id",async(req,res)=>{
     const id = req.params.id;
 
     // Delete the product with the matching ID from the database
-    const deletedProduct = await Product.deleteOne({_id:id});
+    // `findByIdAndDelete()` finds a document by its `_id` and deletes it
+    // Returns the deleted document if found and deleted, otherwise returns `null
+    const deletedProduct = await Product.findByIdAndDelete({_id:id});
 
     // Check if the product was successfully deleted (affected document count > 0)
-    if (deletedProduct.deletedCount > 0) {
+    // if (deletedProduct.deletedCount > 0) {
+    if (deletedProduct) {
       // If the product was deleted, send a success response
       res.status(200).send({
         success: true,                    
         message: "Product is deleted successfully", 
-        data: deletedProduct,    // Include the deletion result data         
+        data: deletedProduct,    // Include the deleted product data in the response         
       });
     } else {
       // If no product was found with the given ID, send a 404 Not Found response
