@@ -208,8 +208,13 @@ app.get("/product/title/:id", async (req, res) => {
 app.get("/getAllProducts", async (req, res) => {
   console.log(`/getAllProducts`);
   try {
-    // Fetch all products from the database where the price is exactly 900
-    const products = await Product.find({price:{$eq:900}});
+    // Extracting the price from the query parameters
+    //http://localhost:3002/getAllProducts?price=1300
+    const price=req.query.price;
+    console.log(price);
+    // Fetch all products from the database where the price is exactly equal to the given value
+    const products = await Product.find({price:{$eq:price}});
+
     const products1 = await Product.find({ price: 900 });
     const productsin = await Product.find({ price: { $in: [1200, 1300] } });
     const productsnin = await Product.find({ price: { $nin: [1200, 1300] } });
