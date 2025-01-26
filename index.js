@@ -210,6 +210,13 @@ app.get("/getAllProducts", async (req, res) => {
   try {
     // Fetch all products from the database where the price is exactly 900
     const products = await Product.find({price:{$eq:900}});
+    const products1 = await Product.find({ price: 900 });
+    const productsin = await Product.find({ price: { $in: [1200, 1300] } });
+    const productsnin = await Product.find({ price: { $nin: [1200, 1300] } });
+    const productsne = await Product.find({ price: { $ne: 1200 } });
+    const productsgt = await Product.find({ price: { $gt: 1200 } });
+    const productslt = await Product.find({ price: { $lt: 1200 } });
+    const productsgte = await Product.find({ price: { $gte: 1200 } });
 
     // Check if any products are found
     if (products.length>0) {// Check if the `products` array is empty
