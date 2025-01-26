@@ -137,8 +137,11 @@ app.get("/product/title/:id", async (req, res) => {
   try {
     // Find a single product by its `_id` field and retrieve only the `title` field
     // Use `.select({ title: 1 })` to include only the `title` field in the response                                  
-    const productTitle = await Product.findOne({ _id: req.params.id }).select({title:1});
-
+    const productTitle = await Product.findOne({ _id: req.params.id })
+                                       .select({title:1,_id:0});
+                                        // `{ title: 1 }` means include the `title` field in the result
+                                                  // `{ _id: 0 }` means exclude the `_id` field from the result
+                                                  
     // Send the retrieved product(s) as a response
     res.status(200).send(productTitle);
   } catch (error) { // Catch any error that occurs while fetching products from the database
