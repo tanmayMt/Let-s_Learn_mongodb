@@ -111,17 +111,17 @@ app.get("/products", async (req, res) => {
 });
 
 // Route handler for GET request to Fetch the product based on the "id" provided in the URL parameter
-//http://localhost:3002/products/67946cc81c0fc2fd32d9aa67
-app.get("/products/:id", async (req, res) => {     
-  console.log(`/products/${req.params.id}`)
+//http://localhost:3002/product/67946cc81c0fc2fd32d9aa67
+app.get("/product/:id", async (req, res) => {     
+  console.log(`/product/${req.params.id}`)
   try {
     // Fetch the product based on the "id" provided in the URL parameter
     // If "id" is provided in the request parameters, it will filter products based on that
-    const products = await Product.find({ _id: req.params.id });
+    const product = await Product.find({ _id: req.params.id });
                                       //Ensure that the id field in your database is actually called id. If your database schema uses _id (which is common in MongoDB), update the quer
     // Find a single product that matches the given _id (returns one document).
     // Use this when you expect only one result or need a single document.                                  
-    const product = await Product.findOne({ _id: req.params.id });
+    const product1 = await Product.findOne({ _id: req.params.id });
 
     // Send the retrieved product(s) as a response
     res.status(200).send(product);
@@ -130,6 +130,7 @@ app.get("/products/:id", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
+
 
 
 //Route Not Found
