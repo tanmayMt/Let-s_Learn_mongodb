@@ -303,6 +303,31 @@ const productsnot = await Product.find({ price: { $not: { $lt: 900 } } });
   }
 });
 
+// Route handler for GET request to "/getProductsCount" to get the count of all products  http://localhost:3002//getProductsCount
+// counting and sorting :  countDocuments() / count()
+app.get("/getProductsCount", async (req, res) => {
+  // Log the endpoint being hit for debugging purposes
+  console.log(`/getProductsCount`);
+
+  try {
+    // Fetch the total count of products from the database
+    // `Product.find()` retrieves all products, and `.countDocuments()` counts the number of documents
+    const noOfProducts = await Product.find().countDocuments();
+    const notOfProductsWithPrice900 = await Product.find({price:{$eq:900}}).countDocuments();
+    // Send the product count as a success response
+    res.status(201).send({
+      success: true,                  
+      message: "return no of products(/getProductsCount)",
+      data: {noOfProducts,notOfProductsWithPrice900},
+    });
+  } catch (error) {
+
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+});
+
 //Route Not Found
 app.use((req,res)=>{
     res.status(404).json({message:"Route Not Fount"});
