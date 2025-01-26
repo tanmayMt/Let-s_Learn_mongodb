@@ -330,7 +330,6 @@ app.get("/getProductsCount", async (req, res) => {
 // Route handler for GET request to "/getProductsSort" to retrieve sorted products
 // Endpoint: http://localhost:3002/getProductsSort
 app.get("/getProductsSort", async (req, res) => {
-
   console.log(`/getProductsSort`);
   try {
     // Fetch all products from the database and sort them in ascending order based on the "price" field
@@ -358,6 +357,39 @@ app.get("/getProductsSort", async (req, res) => {
     });
   }
 });
+
+// Route handler for DELETE request to delete a product by its ID
+// http://localhost:3002/product/67963aea78ea21d41d38881b
+app.delete("/product/:id",async(req,res)=>{
+  try{
+    // Extract the product ID from the request parameters
+    const id = req.params.id;
+
+    // Delete the product with the matching ID from the database
+    const deletedProduct = await Product.deleteOne({_id:id});
+
+    // Check if the product was successfully deleted (affected document count > 0)
+    if (deletedProduct.deletedCount > 0) {
+      // If the product was deleted, send a success response
+      res.status(200).send({
+        success: true,                    
+        message: "Product is deleted successfully", 
+        data: deletedProduct,    // Include the deletion result data         
+      });
+    } else {
+      // If no product was found with the given ID, send a 404 Not Found response
+      res.status(404).send({
+        success: false,     
+        message: "Product not found(Deletion is not possiable)",
+      });
+    }
+  }
+  catch(error){
+    res.status(500).send({
+      message:error.message,
+    });
+  }
+})
 
 //Route Not Found
 app.use((req,res)=>{
