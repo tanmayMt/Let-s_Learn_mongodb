@@ -161,7 +161,18 @@ app.get("/product/:id", async (req, res) => {
 
 // Define an API endpoint to fetch spacific field "title" of a product by its ID http://localhost:3002/product/title/6795b15bbed6dd86bdba1b91
 app.get("/product/title/:id", async (req, res) => {     
-  console.log(`/product/${req.params.id}`)
+  console.log(`/product/${req.params.id}`);
+//If req.params.id is not a valid MongoDB ObjectId (it's an invalid format or has an incorrect length).
+//When MongoDB's Mongoose library tries to cast the invalid value to an ObjectId, it throws a CastError because the value doesn't meet the requirements of a valid ObjectId.
+    // Validate the `req.params.id` to ensure it's a valid MongoDB ObjectId
+    const isValidId = mongoose.Types.ObjectId.isValid(req.params.id);
+    if (!isValidId) {
+      return res.status(400).send({
+        success: false,
+        message: "Invalid Product ID", // Error message for invalid ObjectId
+      });
+    }
+
   try {
     // Find a single product by its `_id` field and retrieve only the `title` field
     // Use `.select({ title: 1 })` to include only the `title` field in the response                                  
