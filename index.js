@@ -267,6 +267,23 @@ app.get("/getAllProductsalogical", async (req, res) => {
     ]
     });
 
+    //More Logical operators
+const productsand = await Product.find({
+  $and: [{ price: { $lt: 1400 } }, { rating: { $gt: 4 } }],
+});
+
+const productsor = await Product.find({
+  $or: [{ price: { $lt: 1400 } }, { rating: { $gt: 4 } }],
+});
+
+// returns all that fail both clauses
+const productsnor = await Product.find({
+  $nor: [{ price: { $lt: 1400 } }, { rating: { $gt: 4 } }],
+});
+
+// $not
+const productsnot = await Product.find({ price: { $not: { $lt: 900 } } });
+
     // Check if any products are found
     if (products.length>0) {// Check if the `products` array is empty
       res.status(201).send({
