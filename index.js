@@ -27,6 +27,69 @@ const connectDB = async () => {
 // - we can define default values of a field
 // - A model works as a wrapper for schema. It provides an interface for accessign database to create, update, delete, read from database.
 // validation when creating schema
+
+// - [official documentation](https://mongoosejs.com/docs/validation.html)
+// - A common gotcha for beginners is that the unique option for schemas is not a validator.
+// - Numbers have: min, max validators
+// - Strings have: minlength, maxlength, trim, lowercase, enum
+// - validator error message can be provided using array syntax and object syntax
+
+// ```js
+// Array syntax: min: [6, 'Must be at least 6, got {VALUE}']
+// Object syntax: enum: { values: ['Coffee', 'Tea'], message: '{VALUE} is not supported' }
+
+// Mongoose Custom validations
+
+// - for fulfilling own requirements based on certain situation we need to create custom validations.
+// - read about email vliadation
+// - [create your own validation regular expression](https://regexr.com/3e48o)
+
+// price:{
+//     type: String,
+//     required: [true, "title is required"],
+//     validate: {
+//       validator: function (v) {
+//         return v.length === 10;
+//       },
+//       message: (props) => `${props.value} is not a valid product title!`,
+//     },
+// },
+// phone: {
+//     type: String,
+//     required: [true, 'User phone number required'],
+//     validate: {
+//       validator: function(v) {
+//         return /\d{3}-\d{3}-\d{4}/.test(v);
+//       },
+//       message: props => `${props.value} is not a valid phone number!`
+//     },
+//   }
+//   email:{
+//     // ^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$
+//     type: String,
+//     required: [true, 'User email is required'],
+//     trim: true,
+//     lowercase: true,
+//     unique: true,
+//     validate: {
+//       validator: function(v) {
+//         const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+//         return emailRegex.test(v);
+//       },
+//       message: props => `${props.value} is not a valid phone number!`
+//     },
+//      email: {
+//         type: String,
+//         trim: true,
+//         lowercase: true,
+//         unique: true,
+//         required: 'Email address is required',
+//         validate: [validateEmail, 'Please fill a valid email address'],
+//         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+//     }
+
+//   }
+
 const productSchema = new mongoose.Schema({    // Define a schema
   title: {
     type: String,
