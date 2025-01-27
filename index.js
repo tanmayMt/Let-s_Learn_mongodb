@@ -26,10 +26,26 @@ const connectDB = async () => {
 // - define structure of document with validation
 // - we can define default values of a field
 // - A model works as a wrapper for schema. It provides an interface for accessign database to create, update, delete, read from database.
+// validation when creating schema
 const productSchema = new mongoose.Schema({    // Define a schema
   title: {
     type: String,
-    reuired: true,
+    // validation
+    required: [true, "product title is required"],//This is used in Mongoose to ensure that a specific field must have a value and cannot be left empty when creating or updating a document.
+
+    minlength: 3, 
+    minlength: [3, "error message here"],    
+    maxlength: 20, 
+   
+    // lowercase: true,  // Converts the value to lowercase before saving it to the database.Useful for case-insensitive fields like emails.
+    // uppercase: true,  // Converts the value to uppercase before saving. Useful for fields like codes or IDs that require consistent formatting.
+
+    trim: true, // "     iphone 7      "
+    // enum: ["iphone", "samsung", "motorola"] // no other value is allowed other than these,
+    enum: {
+      values: ['iphone', 'samsung', 'motorola'], // no other value is allowed other than these,
+      message: '{VALUE} is not supported'
+    }
   },
   description: {
     type: String,
@@ -37,7 +53,9 @@ const productSchema = new mongoose.Schema({    // Define a schema
   },
   price: {
     type: Number,
-    reuired: true,
+     required: true,
+     min: 20,
+     max: 30
   },
   rating: {
     type: Number,
@@ -76,12 +94,12 @@ app.post("/products", async (req, res) => {
 
     // Create multiple document
     const newProduct1 = new Product({
-      title: "iPhone 16",
+      title: "Realme",
       description: "a nice product",
       price: 1300,
     });
     const newProduct2 = new Product({
-      title: "iPhone 17",
+      title: "Lanovo",
       description: "a nice cute product",
       price: 1990,
     });
