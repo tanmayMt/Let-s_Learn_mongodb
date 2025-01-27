@@ -394,6 +394,47 @@ app.delete("/product/:id",async(req,res)=>{
   }
 })
 
+// Route handler for UPDATE request to delete a product by its ID
+// http://localhost:3002/product/67963aea78ea21d41d38881b
+app.put("/product/:id",async(req,res)=>{
+  try{
+    // Extract the product ID from the request parameters
+    const id = req.params.id;
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+                                                           {_id:id},
+                                                           {$set:{
+                                                                  title: req.body.title,
+                                                                  description: req.body.description,
+                                                                  price: req.body.price,
+                                                                  rating:req.body.rating
+                                                                 }
+                                                           }
+                                                          );
+
+    if (updatedProduct) {
+      // If the product was deleted, send a success response
+      res.status(200).send({
+        success: true,                    
+        message: "Product is updated successfully", 
+        data: updatedProduct,    // Include the deleted product data in the response         
+      });
+    } else {
+      // If no product was found with the given ID, send a 404 Not Found response
+      res.status(404).send({
+        success: false,     
+        message: "Product not found(Deletion is not possiable)",
+      });
+    }
+  }
+  catch(error){
+    res.status(500).send({
+      message:error.message,
+    });
+  }
+})
+
+
 //Route Not Found
 app.use((req,res)=>{
     res.status(404).json({message:"Route Not Fount"});
