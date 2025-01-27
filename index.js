@@ -88,7 +88,31 @@ const connectDB = async () => {
 //         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
 //     }
 
-//   }
+// npm validator
+
+// - `npm i validator`
+
+// ```js
+// email: {
+//     type: String,
+//     unique: true,
+//     required: [true, "email is required"],
+//     trim: true,
+//     lowercase: true,
+//     validate: {
+//       validator: validator.isEmail,
+//       message: (props) => `${props.value} is not a valid email!`,
+//     },
+//   },
+
+// pagination
+
+// ```js
+// const { page = 1, limit = 10 } = req.query;
+// const products = await Product.find()
+//   .limit(limit)
+//   .skip((page - 1) * limit);
+// console.log(products);
 
 const productSchema = new mongoose.Schema({    // Define a schema
   title: {
