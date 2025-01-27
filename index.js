@@ -394,17 +394,18 @@ app.delete("/product/:id",async(req,res)=>{
   }
 })
 
-// Route handler for UPDATE request to delete a product by its ID
-// http://localhost:3002/product/67963aea78ea21d41d38881b
+// Route handler for UPDATE request to update a product by its ID
+// http://localhost:3002/product/6796e853a87cf547177e9e25
 app.put("/product/:id",async(req,res)=>{
   try{
     // Extract the product ID from the request parameters
     const id = req.params.id;
 
+    // Use Mongoose's findByIdAndUpdate to update the product by its ID
     const updatedProduct = await Product.findByIdAndUpdate(
-                                                           {_id:id},
-                                                           {$set:{
-                                                                  title: req.body.title,
+                                                           {_id:id},// Query to find the product by its ID
+                                                           {$set:{  // Fields to update in the product document
+                                                                  title: req.body.title,  // Update the title field
                                                                   description: req.body.description,
                                                                   price: req.body.price,
                                                                   rating:req.body.rating
@@ -417,7 +418,7 @@ app.put("/product/:id",async(req,res)=>{
       res.status(200).send({
         success: true,                    
         message: "Product is updated successfully", 
-        data: updatedProduct,    // Include the deleted product data in the response         
+        data: updatedProduct,    // Include the updated product data in the response         
       });
     } else {
       // If no product was found with the given ID, send a 404 Not Found response
