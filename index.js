@@ -410,7 +410,9 @@ app.put("/product/:id",async(req,res)=>{
                                                                   price: req.body.price,
                                                                   rating:req.body.rating
                                                                  }
-                                                           }
+                                                           },
+                                                           { new: true } // Return the updated product in the response
+                                                           //`{ new: true }` ensures that the updated product is returned in the response after the update operation, instead of the original (pre-update) document.
                                                           );
 
     if (updatedProduct) {
