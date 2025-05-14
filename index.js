@@ -367,9 +367,12 @@ app.get("/getAllProductsalogical", async (req, res) => {
   // Fetch all products from the database where:
   // 1. The price is exactly equal to the given value
   // 2. The rating is greater than or equal to the given value
-    const products = await Product.find({$and:[
-      {price:{$eq:price}},{rating:{$gte:rating}}
-    ]
+    const products = await Product.find({
+      $and:
+      [
+        {price:{$eq:price}},
+        {rating:{$gte:rating}}
+      ]
     });
 
     //More Logical operators

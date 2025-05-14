@@ -1,0 +1,16 @@
+users: {
+    "_id": ObjectId("8988998"),
+    "name": "Tanmay",
+    "email": "t@gmail.com"
+  }
+  
+  orders: {
+    "_id": 1,
+    "user_id": ObjectId("8886876"),
+    "amount": 500,
+    "status": "shipped"
+  }
+
+  
+  
+  // 1. Fetch all orders with status "shipped"
