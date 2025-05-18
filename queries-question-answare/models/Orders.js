@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const ordersSchema = new mongoose.Schema({
     userId:{
@@ -6,21 +6,13 @@ const ordersSchema = new mongoose.Schema({
     },
     amount:{
         type:Number,
-        require
+        require:true
     },
     status:{
         type:String,
-        require
+        require:true
     }
 })
 
 //const orders = mongoose.model("Orders",ordersSchema);
 export default mongoose.model("Orders",ordersSchema);
-
-
-// orders: {
-//     "_id": 1,
-//     "user_id": ObjectId("8886876"),
-//     "amount": 500,
-//     "status": "shipped"
-//   }

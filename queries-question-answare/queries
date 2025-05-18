@@ -1,0 +1,108 @@
+1. Fetch all orders with status "shipped"
+
+db.orders.find({ status: "shipped" });
+
+Explanation:
+Basic query to find documents in orders where status is "shipped".
+
+---
+
+2. Total amount spent by each user (aggregation)
+
+db.orders.aggregate([
+{ $group: { _id: "$user_id", totalSpent: { $sum: "$amount" } } }
+]);
+
+Explanation:
+Groups orders by user_id and sums the amount field to get total spending.
+
+---
+
+3. Users with total orders > ₹1000
+
+db.orders.aggregate([
+{ $group: { _id: "$user_id", total: { $sum: "$amount" } } },
+{ $match: { total: { $gt: 1000 } } }
+]);
+
+Explanation:
+Groups orders by user and filters out those with total spending greater than ₹1000.
+
+---
+
+4. Create index on status and check stats
+
+db.orders.createIndex({ status: 1 });
+
+db.orders.find({ status: "shipped" }).explain("executionStats");
+
+Explanation:
+Creates an index on status and uses .explain() to analyze performance benefits.
+
+---
+
+5. Update all "pending" orders to "confirmed"
+
+db.orders.updateMany(
+{ status: "pending" },
+{ $set: { status: "confirmed" } }
+);
+
+Explanation:
+Updates all orders with "pending" status to "confirmed" using updateMany.
+
+---
+
+6. Add new order inside a user document (embedding)
+
+db.users.updateOne(
+{ name: "Tanmay" },
+{ $push: { orders: { amount: 800, status: "shipped" } } }
+);
+
+Explanation:
+Embeds an order inside the user document using $push (denormalized structure).
+
+---
+
+7. Fetch orders with user names using $lookup
+
+db.orders.aggregate([
+{
+$lookup: {
+from: "users",
+localField: "user_id",
+foreignField: "_id",
+as: "user_info"
+}
+},
+{
+$unwind: "$user_info"
+},
+{
+$project: {
+amount: 1,
+status: 1,
+user_name: "$user_info.name"
+}
+}
+]);
+
+Explanation:
+Performs a JOIN-like operation with $lookup and extracts user names.
+
+---
+
+8. Count orders per status
+
+db.orders.aggregate([
+{
+$group: {
+_id: "$status",
+count: { $sum: 1 }
+}
+}
+]);
+
+Explanation:
+Groups orders by status and counts how many records fall under each type.
